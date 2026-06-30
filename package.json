@@ -1,0 +1,24 @@
+{
+  "name": "terrace",
+  "productName": "Terrace",
+  "version": "1.0.0",
+  "description": "Peer-to-peer match room for football predictions, live chat, and a self-computed leaderboard. No server, no database, no accounts.",
+  "main": "main.js",
+  "scripts": {
+    "start": "electron .",
+    "test": "node test/core-logic.test.js"
+  },
+  "keywords": ["p2p", "hyperswarm", "hypercore", "electron"],
+  "author": "",
+  "license": "MIT",
+  "type": "commonjs",
+  "dependencies": {
+    "b4a": "^1.8.1",
+    "hypercore": "^11.33.5",
+    "hypercore-crypto": "^3.7.0",
+    "hyperswarm": "^4.17.0"
+  },
+  "devDependencies": {
+    "electron": "^43.0.0"
+  }
+}
