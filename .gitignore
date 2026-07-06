@@ -1,0 +1,12 @@
+node_modules/
+
+# Hypercore append-only log storage (per-peer, local only)
+rooms/
+terrace-storage/
+
+# Electron userData (identity keys, per-instance profiles)
+.terrace-data/
+
+# OS/editor cruft
+.DS_Store
+*.log
