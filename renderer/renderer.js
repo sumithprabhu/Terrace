@@ -669,7 +669,7 @@ function mentionsUsername(text, username) {
 }
 
 const GROUP_WINDOW_MS = 5 * 60 * 1000
-const PHASE_LABEL = { normal: 'Full Time', extra_time: 'Extra Time', penalties: 'Penalties' }
+const PHASE_LABEL = { normal: 'Normal Time', extra_time: 'Extra Time', penalties: 'Penalties' }
 
 // ---------- Emoji reactions ----------
 // Real emoji here are fine (this is user generated chat content, not app

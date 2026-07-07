@@ -8,6 +8,9 @@ release/
 # not part of the shipped site
 homie-template/
 
+# Local-only demo recording tooling (simulated peers, scripted walkthrough)
+demo/
+
 # Hypercore append-only log storage (per-peer, local only)
 rooms/
 terrace-storage/
