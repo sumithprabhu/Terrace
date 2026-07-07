@@ -1,0 +1,47 @@
+name: Release
+
+# Builds installers for Windows, macOS, and Linux and attaches them to a
+# GitHub Release. Each platform builds on its own native runner since the
+# native P2P dependencies (sodium-native, udx-native, etc.) need to be
+# rebuilt against that platform's Electron binary.
+on:
+  push:
+    tags:
+      - "v*"
+  workflow_dispatch: {}
+
+jobs:
+  release:
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [macos-latest, windows-latest, ubuntu-latest]
+    runs-on: ${{ matrix.os }}
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
+      - run: npm ci
+
+      - name: Build and publish (macOS)
+        if: matrix.os == 'macos-latest'
+        run: npm run dist:mac -- --publish always
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Build and publish (Windows)
+        if: matrix.os == 'windows-latest'
+        run: npm run dist:win -- --publish always
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Build and publish (Linux)
+        if: matrix.os == 'ubuntu-latest'
+        run: npm run dist:linux -- --publish always
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
