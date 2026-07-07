@@ -14,16 +14,19 @@
         <img class="home-brand-mark" src="./assets/logo.png" alt="Terrace logo" />
         <span class="home-brand-name">Terrace</span>
       </div>
-      <div class="home-peer-pill" title="Your peer id">
-        <span class="home-peer-dot"></span>
-        <code id="my-peer-id">loading…</code>
+      <div class="home-topbar-right">
+        <button id="how-it-works-btn" class="how-it-works-btn" type="button">How it works ?</button>
+        <div class="home-peer-pill" title="Your peer id">
+          <span class="home-peer-dot"></span>
+          <code id="my-peer-id">loading…</code>
+        </div>
       </div>
     </header>
 
     <div class="home-scroll">
       <div class="home-hero">
-        <h1>Pick a match. Predict the score. No server involved.</h1>
-        <p class="tagline">Every match already has a room the moment the fixture exists. Nobody creates one, you just join.</p>
+        <h1>Pick a match. Predict the score.</h1>
+        <p class="tagline">Join the room, chat with everyone watching, and see who called it best.</p>
       </div>
 
       <p id="lobby-error" class="error hidden"></p>
@@ -31,6 +34,83 @@
       <div id="fixture-groups" class="fixture-groups"></div>
     </div>
   </section>
+
+  <div id="how-it-works-modal" class="modal-overlay hidden">
+    <div class="modal-card how-it-works-card">
+      <button type="button" id="how-it-works-close" class="modal-close" aria-label="Close">
+        <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" xmlns="http://www.w3.org/2000/svg"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg>
+      </button>
+
+      <h2>How Terrace works</h2>
+
+      <div class="how-it-works-body">
+        <div class="how-it-works-text">
+          <p class="modal-intro">No accounts, no servers, no middlemen. It's just you and everyone else in the room, talking straight to each other.</p>
+
+          <h3>What you can do</h3>
+          <ul class="how-it-works-features">
+            <li>
+              <span class="feature-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" xmlns="http://www.w3.org/2000/svg"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2"/></svg></span>
+              Predict the score before kickoff. It locks in the moment the match starts.
+            </li>
+            <li>
+              <span class="feature-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" xmlns="http://www.w3.org/2000/svg"><path d="M2.992 16.342a2 2 0 0 1 .094 1.167l-1.065 3.29a1 1 0 0 0 1.236 1.168l3.413-.998a2 2 0 0 1 1.099.092 10 10 0 1 0-4.777-4.719"/></svg></span>
+              Chat live, react, reply, and @mention people in the room.
+            </li>
+            <li>
+              <span class="feature-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" xmlns="http://www.w3.org/2000/svg"><path d="M16 7h6v6"/><path d="m22 7-8.5 8.5-5-5L2 17"/></svg></span>
+              Watch the score update live as people call it in.
+            </li>
+            <li>
+              <span class="feature-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" xmlns="http://www.w3.org/2000/svg"><path d="M10 14.66v1.626a2 2 0 0 1-.976 1.696A5 5 0 0 0 7 21.978"/><path d="M14 14.66v1.626a2 2 0 0 0 .976 1.696A5 5 0 0 1 17 21.978"/><path d="M18 9h1.5a1 1 0 0 0 0-5H18"/><path d="M4 22h16"/><path d="M6 9a6 6 0 0 0 12 0V3a1 1 0 0 0-1-1H7a1 1 0 0 0-1 1z"/><path d="M6 9H4.5a1 1 0 0 1 0-5H6"/></svg></span>
+              See the leaderboard settle once the match ends.
+            </li>
+          </ul>
+
+          <div class="how-it-works-tech">
+            <h3>Under the hood</h3>
+            <p>Built on <strong>Hyperswarm</strong> and <strong>Hypercore</strong>, the same tech behind Keet and other Holepunch apps. Every device keeps its own copy of the room, found and synced directly with peers. No database, no backend, nothing to shut off.</p>
+          </div>
+        </div>
+
+        <div class="how-it-works-visual">
+          <svg class="p2p-diagram" viewBox="0 0 240 200" xmlns="http://www.w3.org/2000/svg">
+            <line class="mesh-line" x1="40" y1="30" x2="200" y2="30" />
+            <line class="mesh-line" x1="40" y1="30" x2="40" y2="170" />
+            <line class="mesh-line" x1="40" y1="30" x2="200" y2="170" />
+            <line class="mesh-line" x1="200" y1="30" x2="40" y2="170" />
+            <line class="mesh-line" x1="200" y1="30" x2="200" y2="170" />
+            <line class="mesh-line" x1="40" y1="170" x2="200" y2="170" />
+
+            <circle class="node node-you" cx="40" cy="30" r="22" />
+            <circle class="node" cx="200" cy="30" r="22" />
+            <circle class="node" cx="40" cy="170" r="22" />
+            <circle class="node" cx="200" cy="170" r="22" />
+
+            <g class="node-icon" transform="translate(29, 19) scale(0.9167)" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/>
+            </g>
+            <g class="node-icon" transform="translate(189, 19) scale(0.9167)" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/>
+            </g>
+            <g class="node-icon" transform="translate(29, 159) scale(0.9167)" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/>
+            </g>
+            <g class="node-icon" transform="translate(189, 159) scale(0.9167)" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/>
+            </g>
+
+            <g transform="translate(108, 93)">
+              <g class="center-icon" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M22 12h-2.48a2 2 0 0 0-1.93 1.46l-2.35 8.36a.25.25 0 0 1-.48 0L9.24 2.18a.25.25 0 0 0-.48 0l-2.35 8.36A2 2 0 0 1 4.49 12H2"/>
+              </g>
+            </g>
+          </svg>
+          <p class="diagram-caption">Everyone connects straight to each other. No server in the middle to go down, get hacked, or shut off.</p>
+        </div>
+      </div>
+    </div>
+  </div>
 
   <section id="room-screen" class="screen hidden">
     <header class="room-header">
@@ -61,7 +141,9 @@
         <div class="panel" id="score-panel">
           <h3>
             Current Score
-            <span class="info-icon" tabindex="0" title="Anyone can update this as the match happens. If people disagree, whichever score most people currently agree on is shown.">?</span>
+            <span class="info-icon" tabindex="0">?
+              <span class="info-icon-tooltip">Anyone can update this as the match happens. If people disagree, whichever score most people currently agree on is shown.</span>
+            </span>
           </h3>
           <div id="score-display" class="score-display">
             <span id="score-value" class="score-value">0:0</span>
@@ -99,11 +181,30 @@
 
       <div class="column column-right">
         <div class="panel chat-panel">
+          <div id="chat-bg-pattern" class="chat-bg-pattern"></div>
           <div class="chat-panel-header">
             <h3>Live Chat</h3>
             <span id="chat-peer-count" class="chat-peer-count"></span>
           </div>
           <div id="chat-feed" class="chat-feed"></div>
+          <div id="typing-indicator" class="typing-indicator hidden"></div>
+          <div id="reaction-picker" class="reaction-picker hidden">
+            <button type="button" data-emoji="👍">👍</button>
+            <button type="button" data-emoji="❤️">❤️</button>
+            <button type="button" data-emoji="😂">😂</button>
+            <button type="button" data-emoji="🔥">🔥</button>
+            <button type="button" data-emoji="👏">👏</button>
+            <button type="button" data-emoji="😮">😮</button>
+          </div>
+          <div id="reply-banner" class="reply-banner hidden">
+            <div class="reply-banner-text">
+              Replying to <span id="reply-banner-name"></span>: <span id="reply-banner-preview"></span>
+            </div>
+            <button type="button" id="reply-banner-cancel" aria-label="Cancel reply">
+              <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" xmlns="http://www.w3.org/2000/svg"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg>
+            </button>
+          </div>
+          <ul id="mention-autocomplete" class="mention-autocomplete hidden"></ul>
           <form id="chat-form" class="chat-form">
             <textarea id="chat-input" class="chat-textarea" rows="1" placeholder="Say something to the room" autocomplete="off"></textarea>
             <button type="submit" class="send-btn" aria-label="Send message">
