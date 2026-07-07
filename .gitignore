@@ -1,6 +1,9 @@
 node_modules/
 website/.next/
 
+# electron-builder packaged output
+release/
+
 # Local reference copy of the v0 template the landing page was adapted from,
 # not part of the shipped site
 homie-template/

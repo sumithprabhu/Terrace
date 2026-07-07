@@ -6,12 +6,28 @@
   "main": "main.js",
   "scripts": {
     "start": "electron .",
-    "test": "node test/core-logic.test.js"
+    "test": "node test/core-logic.test.js",
+    "dist": "electron-builder --mac --win --linux",
+    "dist:mac": "electron-builder --mac",
+    "dist:win": "electron-builder --win",
+    "dist:linux": "electron-builder --linux"
   },
-  "keywords": ["p2p", "hyperswarm", "hypercore", "electron"],
-  "author": "",
+  "keywords": [
+    "p2p",
+    "hyperswarm",
+    "hypercore",
+    "electron"
+  ],
+  "author": {
+    "name": "sumithprabhu",
+    "email": "sumithprabhu07@gmail.com"
+  },
   "license": "MIT",
   "type": "commonjs",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/sumithprabhu/Terrace.git"
+  },
   "dependencies": {
     "b4a": "^1.8.1",
     "hypercore": "^11.33.5",
@@ -19,6 +35,57 @@
     "hyperswarm": "^4.17.0"
   },
   "devDependencies": {
-    "electron": "^43.0.0"
+    "electron": "^43.0.0",
+    "electron-builder": "^26.15.3"
+  },
+  "build": {
+    "appId": "com.sumithprabhu.terrace",
+    "productName": "Terrace",
+    "directories": {
+      "output": "release",
+      "buildResources": "build"
+    },
+    "files": [
+      "main.js",
+      "preload.js",
+      "lib/**/*",
+      "renderer/**/*",
+      "package.json",
+      "!**/node_modules/*/{CHANGELOG.md,README.md,readme.md,*.map}"
+    ],
+    "extraMetadata": {
+      "main": "main.js"
+    },
+    "publish": {
+      "provider": "github",
+      "owner": "sumithprabhu",
+      "repo": "Terrace"
+    },
+    "mac": {
+      "icon": "build/icon.icns",
+      "category": "public.app-category.sports",
+      "target": [
+        { "target": "dmg", "arch": ["x64", "arm64"] },
+        { "target": "zip", "arch": ["x64", "arm64"] }
+      ]
+    },
+    "win": {
+      "icon": "build/icon.ico",
+      "target": [
+        { "target": "nsis", "arch": ["x64"] }
+      ]
+    },
+    "nsis": {
+      "oneClick": false,
+      "allowToChangeInstallationDirectory": true
+    },
+    "linux": {
+      "icon": "build/icon.png",
+      "category": "Network",
+      "target": [
+        { "target": "AppImage", "arch": ["x64"] },
+        { "target": "deb", "arch": ["x64"] }
+      ]
+    }
   }
 }
