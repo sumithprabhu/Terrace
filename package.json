@@ -59,7 +59,8 @@
     "publish": {
       "provider": "github",
       "owner": "sumithprabhu",
-      "repo": "Terrace"
+      "repo": "Terrace",
+      "releaseType": "release"
     },
     "mac": {
       "icon": "build/icon.icns",
