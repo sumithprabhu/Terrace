@@ -35,6 +35,7 @@ process.on('message', async (msg) => {
           peerId: room.peerId,
           connections: room.connections,
           chat: room.getChat(),
+          reactions: room.getReactions(),
           currentScore: room.getCurrentScore(),
           matchEnded: room.isMatchEnded(),
           leaderboard: room.getLeaderboard(),
@@ -53,6 +54,12 @@ process.on('message', async (msg) => {
 
     if (msg.cmd === 'sendChat') {
       await room.sendChat(msg.args)
+      process.send({ id: msg.id, ok: true })
+      return
+    }
+
+    if (msg.cmd === 'react') {
+      await room.react(msg.args)
       process.send({ id: msg.id, ok: true })
       return
     }

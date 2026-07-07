@@ -83,6 +83,22 @@ function testLeaderboardTiesAndRanking() {
   console.log('✔ leaderboard ranking + per-peer dedupe logic verified')
 }
 
+function testReactionsArePure() {
+  const entries = [
+    { type: 'chat', peerId: 'p1', text: 'nice one', ts: 100 },
+    { type: 'reaction', peerId: 'p2', targetTs: 100, emoji: '🔥', ts: 200 },
+    { type: 'reaction', peerId: 'p3', targetTs: 100, emoji: '🔥', ts: 210 },
+    { type: 'reaction', peerId: 'p2', targetTs: 100, emoji: '❤️', ts: 300 }, // p2 changes their mind, only counts once
+    { type: 'reaction', peerId: 'p3', targetTs: 100, emoji: null, ts: 400 } // p3 removes their reaction
+  ]
+  const reactions = lb.getReactions(entries)
+  const forMessage = reactions[100]
+  assert.strictEqual(forMessage.length, 1, 'p2 only has one active reaction (their latest), p3 removed theirs')
+  assert.strictEqual(forMessage[0].peerId, 'p2')
+  assert.strictEqual(forMessage[0].emoji, '❤️')
+  console.log('✔ reaction consensus logic verified (one active reaction per peer, removal supported)')
+}
+
 function testCurrentScoreConsensusIsPure() {
   assert.strictEqual(lb.getCurrentScore([]), null, 'no reports yet => no current score')
 
@@ -171,6 +187,10 @@ class PeerHandle {
     return this.call('sendChat', { args })
   }
 
+  react(args) {
+    return this.call('react', { args })
+  }
+
   reportScore(args) {
     return this.call('reportScore', { args })
   }
@@ -228,6 +248,15 @@ async function testP2PSync() {
   assert.strictEqual(peerA.getChat().length, (await peerB.getState()).chat.length)
   console.log('✔ chat messages replicated both ways, feeds match:', peerA.getChat().length, 'messages')
 
+  // --- react to peer A's chat message from peer B, verify it syncs back ---
+  const [firstMsg] = peerA.getChat()
+  await peerB.react({ targetTs: firstMsg.ts, emoji: '🔥' })
+  await waitFor(() => (peerA.getReactions()[firstMsg.ts] || []).length === 1)
+  const reactionOnA = peerA.getReactions()[firstMsg.ts][0]
+  assert.strictEqual(reactionOnA.peerId, peerBId)
+  assert.strictEqual(reactionOnA.emoji, '🔥')
+  console.log('✔ emoji reaction replicated from B to A')
+
   // --- current score is crowd sourced: peer A misreports it, peer B corrects
   // it. Exactly 2 reporters disagreeing => the latest (peer B's) should win.
   await peerA.reportScore({ home: 2, away: 0, phase: 'normal' })
@@ -276,6 +305,7 @@ async function testP2PSync() {
 async function main() {
   testLockLogicIsPure()
   testLeaderboardTiesAndRanking()
+  testReactionsArePure()
   testFixtureLifecycleIsPure()
   testCurrentScoreConsensusIsPure()
   await testP2PSync()
