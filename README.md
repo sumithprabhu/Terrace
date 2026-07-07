@@ -1,35 +1,25 @@
-# Terrace 🏟️
+<p align="center">
+  <img src="renderer/assets/logo.png" alt="Terrace logo" width="120" />
+</p>
 
-Terrace is a peer-to-peer match room for football fans. Before kickoff, everyone in
-the room submits a score prediction. During the match, everyone chats live, and
-anyone can report what they think the current score is, live, as the match
-progresses (Full Time, Extra Time, or Penalties) — if people disagree, the score
-most people currently agree on is the one that counts. Whoever's prediction is
-closest to that live score gets a highlight next to their name in chat, live, well
-before the match is even over. Once someone clicks End Match, every peer's app
-independently computes a leaderboard from that same crowd sourced score, with
-**no server, no database, and no accounts** anywhere in the picture.
+<h1 align="center">Terrace</h1>
 
-There is nothing centralized coordinating the room: no backend decides who's right,
-no API stores the chat, no account system identifies you. Every peer holds an
-append-only log (a [Hypercore](https://github.com/holepunchto/hypercore)) that it
-writes to, and replicates every other peer's log directly over
-[Hyperswarm](https://github.com/holepunchto/hyperswarm) — an encrypted, DHT-based
-peer discovery and connection layer. Predictions, chat, and score reports all live
-as entries on these logs. Nothing is looked up from anywhere; the current score,
-who's leading, and the final leaderboard are all *computed*, identically, by every
-peer, from the same merged data.
+<p align="center">
+  A peer-to-peer match room for football fans: predict the score, chat live,<br />
+  and watch a self-computed leaderboard update in real time.<br />
+  No server, no database, no accounts.
+</p>
 
-**Rooms are automatic, not manually created.** There's no "Create Room" button.
-The match list (`lib/fixtures.js`) is the real, live 2026 World Cup schedule,
-pulled from a free, no key needed public data feed — every match already has a
-room, identified by a stable `matchId`, the moment the fixture exists. A room
-opens for predictions **12 hours before kickoff** and stays open through the
-match until **6 hours after kickoff**, after which it's no longer offered as
-joinable. You don't type in team names or a kickoff time and hope everyone else
-typed the exact same thing — you just pick the match from the list and click
-Join, and Hyperswarm/Hypercore do the rest. If the feed is unreachable (offline,
-feed down), the app falls back to a small bundled list so it still works.
+## Features
+
+- **Automatic rooms** — no "Create Room" button; every match already has a room the moment the fixture exists, so there's nothing to coordinate and no risk of two people ending up in different rooms for the same match
+- **Live 2026 World Cup schedule** — pulled from a free, no key needed public data feed, with an offline fallback list so the app still works with no internet access to anything but peers
+- **Predictions that lock at kickoff** — submit before kickoff, automatically locked the moment it passes, computed locally from the same kickoff time on every peer
+- **Live chat** — grouped messages, colored avatars, day dividers, a growing input box, following patterns from widely used messaging apps
+- **Crowd sourced live score** — anyone can update the current score as the match happens (Full Time, Extra Time, Penalties); disagreements resolve by majority, or by whoever posted most recently
+- **Live leading indicator** — whoever's prediction is currently closest to the live score gets a highlight next to their name in chat, well before the match is even over
+- **Self-computed leaderboard** — every peer independently computes the same ranking once the match ends, and it keeps recomputing live if the score is disputed afterward
+- **Real peer-to-peer networking** — Hyperswarm for peer discovery, Hypercore for the shared append-only log, zero central server involved in any of it
 
 ## Setup
 
