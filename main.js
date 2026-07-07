@@ -32,6 +32,7 @@ function buildState() {
     connections: room.connections,
     fixture: currentFixture,
     chat: room.getChat(),
+    reactions: room.getReactions(),
     currentScore: room.getCurrentScore(),
     matchEnded: room.isMatchEnded(),
     leaderboard: room.getLeaderboard(),
@@ -82,6 +83,7 @@ ipcMain.handle('room:enter', async (_event, { matchId }) => {
   currentFixture = fixture
   room.on('entry', () => sendState())
   room.on('peers', () => sendState())
+  room.on('typing', (msg) => { if (win) win.webContents.send('room:typing', msg) })
 
   await room.join()
   sendState()
@@ -96,10 +98,21 @@ ipcMain.handle('room:submitPrediction', async (_event, { home, away }) => {
   return true
 })
 
-ipcMain.handle('room:sendChat', async (_event, text) => {
+ipcMain.handle('room:sendChat', async (_event, { text, replyToTs }) => {
   if (!room) throw new Error('Not in a room')
-  await room.sendChat(text)
+  await room.sendChat(text, replyToTs)
   return true
+})
+
+ipcMain.handle('room:react', async (_event, { targetTs, emoji }) => {
+  if (!room) throw new Error('Not in a room')
+  await room.react({ targetTs, emoji })
+  return true
+})
+
+ipcMain.handle('room:setTyping', async (_event, isTyping) => {
+  if (!room) return
+  room.setTyping(isTyping)
 })
 
 ipcMain.handle('room:reportScore', async (_event, { home, away, phase, penalties }) => {
